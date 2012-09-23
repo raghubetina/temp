@@ -1,0 +1,52 @@
+<div id="image_section" class="row spaced">
+  <div class="span1" style="font-size: 200%; text-align: right">
+    <i class="icon-white icon-picture"></i>
+  </div>
+</div>
+<div id="audio_section" class="row spaced">
+  <div class="span1" style="font-size: 200%; text-align: right">
+    <i class="icon-white icon-volume-up"></i>
+  </div>
+  <div id="audio_recorder_controls" class="span2">
+    <span class="btn-group">
+      <span id="record" class="btn btn-inverse" style="font-size: 320%; color: red;">&#149;</span>
+      <span id="stop" class="btn btn-inverse"><i class="icon-white icon-stop"></i></span>
+      <span id="save" class="btn btn-inverse"><i class="icon-white icon-ok"></i></span>
+    </span>
+  </div>
+  <%= render 'audio_player', :source => @slide.slide_audio %>
+</div>
+
+<script>
+  <% token = rand(36**8).to_s(36) %>
+  $(document).ready( function() {
+    var settings = {
+       'swf_path': 'http://localhost:3000/swf/jRecorder.swf',
+       'host': 'http://localhost:3000/slides/<%= @slide.id %>/audio?token=<%= token %>',
+       'callback_started_recording' : function(){},
+       'callback_finished_recording' : function(){},
+       'callback_stopped_recording': function(){},
+       'callback_error_recording' : function(){},
+       'callback_activityTime': function(time){},
+       'callback_activityLevel' : function(level){}
+    };
+    $.jRecorder(settings);
+
+    $('#record').on("click", function() {
+         $.jRecorder.record(30);
+     });
+
+    $('#stop').on("click", function() {
+      $.jRecorder.stop();
+    });
+    
+    $('#save').on("click", function() {
+      $.jRecorder.sendData();
+      $("#audio_player").remove();
+      setTimeout(function() {
+        $("#audio_section").append('<%= j(render('audio_player', :source => "/uploads/slide/slide_audio/#{@slide.id}/#{token}.wav")) %>');
+      }, 1000);
+      
+    });
+  });
+</script>
