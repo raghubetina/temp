@@ -1,20 +1,40 @@
-<div id="image_section" class="row spaced">
-  <div class="span1" style="font-size: 200%; text-align: right">
-    <i class="icon-white icon-picture"></i>
+<div class="page-header"></div>
+<div id="image_section" class="row">
+  <div class="row spaced">
+    <div class="span1" style="font-size: 400%;">
+      <i class="icon-white icon-picture"></i>
+    </div>
+    <div class="span5">
+      <div id="image_upload_form">
+        <%= form_for @slide, :html => {:multipart => true} do |f| %>
+          <% if @slide.slide_image? %>
+            <div><label class="checkbox"><%= f.check_box :remove_slide_image %>Remove Current Image</label></div>
+          <% end %>
+          <div><%= f.file_field :slide_image %></div>
+          <div><%= f.submit 'Update Image', :class => 'btn btn-success' %></div>
+        <% end %>
+      </div>
+    </div>
+    <div class="span6">
+      <%= image_tag(@slide.slide_image_url, :class => 'slide_image') if @slide.slide_image? %>
+    </div>
   </div>
 </div>
-<div id="audio_section" class="row spaced">
-  <div class="span1" style="font-size: 200%; text-align: right">
-    <i class="icon-white icon-volume-up"></i>
+<div class="page-header"></div>
+<div class="row">
+  <div id="audio_section" class="row spaced">
+    <div class="span1" style="font-size: 400%;">
+      <i class="icon-white icon-volume-up"></i>
+    </div>
+    <div id="audio_recorder_controls" class="span2">
+      <span class="btn-group">
+        <span id="record" class="btn btn-inverse" style="font-size: 320%; color: red;">&#149;</span>
+        <span id="stop" class="btn btn-inverse"><i class="icon-white icon-stop"></i></span>
+        <span id="save" class="btn btn-inverse"><i class="icon-white icon-ok"></i></span>
+      </span>
+    </div>
+    <%= render 'audio_player', :source => @slide.slide_audio %>
   </div>
-  <div id="audio_recorder_controls" class="span2">
-    <span class="btn-group">
-      <span id="record" class="btn btn-inverse" style="font-size: 320%; color: red;">&#149;</span>
-      <span id="stop" class="btn btn-inverse"><i class="icon-white icon-stop"></i></span>
-      <span id="save" class="btn btn-inverse"><i class="icon-white icon-ok"></i></span>
-    </span>
-  </div>
-  <%= render 'audio_player', :source => @slide.slide_audio %>
 </div>
 
 <script>
@@ -33,7 +53,7 @@
     $.jRecorder(settings);
 
     $('#record').on("click", function() {
-         $.jRecorder.record(30);
+         $.jRecorder.record(15);
      });
 
     $('#stop').on("click", function() {
@@ -45,8 +65,7 @@
       $("#audio_player").remove();
       setTimeout(function() {
         $("#audio_section").append('<%= j(render('audio_player', :source => "/uploads/slide/slide_audio/#{@slide.id}/#{token}.wav")) %>');
-      }, 1000);
-      
+      }, 1000);      
     });
   });
 </script>

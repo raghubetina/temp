@@ -11,6 +11,42 @@
  *= require_self
  *= require_tree .
  */
+ 
+body {
+  background-image: url('/assets/pinstripe.png');
+}
+
+#logo {
+  width: 150px;
+  height: 150px; 
+  margin: 0 auto;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+  border: 10px white solid;
+  background-color: #4E8A92;
+  color: white;
+}
+#heading {
+  margin-top: 50px;
+  text-align: center;
+}
+#me {
+  margin-top: 50px;
+  font-family: 'Bubbler One', sans-serif;
+  font-size: 600%;
+  text-shadow: -1px -1px 0px #CCCCCC;
+}
+#so_far {
+  margin-top: 30px;
+  font-family: 'Kotta One', serif;
+  font-size: 200%;
+}
+
+.slide_image {
+  border: 10px white solid;
+}
+
 .spaced {
   margin-top: 20px;
 }
